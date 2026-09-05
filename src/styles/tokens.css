@@ -1,0 +1,50 @@
+/* Design tokens. Nothing outside this file should introduce a raw colour,
+   font stack or spacing value. See CLAUDE.md for the rationale. */
+
+:root {
+  /* Cool greys from the concept deck's interiors: polished concrete floors,
+     stainless ductwork, exposed slab. No accent colour anywhere - the
+     photography is the only colour on the page. */
+  --concrete-light: #e6e7e7; /* page background */
+  --surface: #f1f2f2;        /* raised panels, form fields */
+  --concrete: #cfd1d1;       /* hairline rules, dividers, muted fills */
+  --steel: #767879;          /* metal accents, icons, LARGE display text only */
+  --muted: #5a5c5d;          /* secondary text, captions */
+  --ink: #17191a;            /* headings, primary text */
+
+  /* Contrast against --concrete-light, checked rather than eyeballed:
+       --ink    14.2:1  passes AA and AAA
+       --muted   5.4:1  passes AA for body text
+       --steel   3.6:1  FAILS AA for body text.
+     --steel is valid for large display text, icons and borders only.
+     Do not lighten --muted. */
+
+  --font-display: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+
+  /* Fluid type scale. Large headings against small plain body text - the
+     scale contrast is doing the industrial work, not decoration. */
+  --step--1: clamp(0.8rem, 0.77rem + 0.15vw, 0.875rem);
+  --step-0: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --step-1: clamp(1.15rem, 1.05rem + 0.5vw, 1.4rem);
+  --step-2: clamp(1.5rem, 1.25rem + 1.2vw, 2.25rem);
+  --step-3: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+  --step-4: clamp(2.75rem, 1.6rem + 5.5vw, 6rem);
+
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1.25rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 5rem;
+  --space-7: 8rem;
+
+  --measure: 60ch;
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+  --max-width: 78rem;
+
+  --rule: 1px solid var(--concrete);
+  --rule-strong: 1px solid var(--steel);
+  --tracking-label: 0.14em;
+}
