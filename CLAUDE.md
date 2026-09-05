@@ -150,22 +150,36 @@ be used for body copy**. Do not lighten `--muted`.
 - **Contact** — address, hours, map link, enquiry form.
 - **Events** — short intro plus an enquiry form (name, email, phone, date, headcount, message).
 
-## Forms — deliberately not wired up
+## Forms — hosted form service
 
-Both forms are built against a documented contract and are **inert until the backend repo exists**.
-Do not substitute a third-party form service (Formspree, Web3Forms, Google Forms) and do not fall
-back to `mailto:` — that was considered and rejected.
+Contact and event enquiries POST to a **hosted form service** (Formspree or Web3Forms) which emails
+them to the café. Pages cannot run code, so there is no alternative that works at launch. This
+supersedes an earlier decision to wait for our own backend; `mailto:` remains rejected.
 
-Intended contract:
+Payload shape, kept stable so the service can be swapped for our own API later:
 
 ```
-POST /api/enquiries
+POST <ENQUIRY_ENDPOINT>
 { name, email, phone?, type: "general" | "event", message, date?, headcount? }
 ```
 
-Until that endpoint is live: build the real markup and client-side validation, keep the submit
-handler behind a single `ENQUIRY_ENDPOINT` constant, and have the disabled state say plainly that
-enquiries are not yet accepted online. Never ship a form that silently discards what a visitor typed.
+Keep the URL behind a single `ENQUIRY_ENDPOINT` constant. Migrating to `api.<domain>/enquiries` when
+the backend repo exists should then be a one-line change with the markup and validation untouched.
+
+Rules for the integration:
+
+- The form ID is public and not a secret, but that means **anyone can POST to it**. Turn on the
+  service's spam filtering, add a honeypot field, and restrict submissions to our domain if the plan
+  allows it.
+- Client-side validation is UX only — the service is what actually accepts the request, so never
+  rely on the browser to enforce anything that matters.
+- Collect only what is needed to answer the enquiry. Every extra field is data handed to a third
+  party for no benefit.
+- **PDPA (Singapore):** the service is a data processor handling names, emails, phone numbers and
+  event details. Name it in a short privacy note linked from both forms, and state what enquiries
+  are used for. Do not ship the forms without that note.
+- Never let a failed submission silently discard what a visitor typed — show the error and keep the
+  field values.
 
 ## Security
 
@@ -173,7 +187,12 @@ Static site, so the surface is small — keep it that way. No `dangerouslySetInn
 event handlers or inline `<script>`, so a strict CSP stays possible. No analytics, pixels, embedded
 widgets, or third-party scripts without asking first — each one is a privacy and supply-chain
 liability on a page that collects contact details. Pin dependency versions and keep the lockfile
-committed. When forms go live, validate on the server too; client-side validation is UX only.
+committed.
+
+The form service is the one approved third party, and it is approved as a **form endpoint, not as a
+script** — post to it with `fetch` or a plain `action=`, and do not load its JavaScript widget. That
+keeps a strict CSP viable: `connect-src` to one known host is far easier to justify than `script-src`
+to someone else's CDN.
 
 ## Working conventions
 
@@ -192,10 +211,8 @@ Do not silently resolve these — they need the owner's call:
 - **Domain name.** A domain is already registered at Vodien and already carries live email, but its
   exact name is not confirmed here — `gthr.com` in the infra diagram may be a placeholder. Do not
   hardcode a domain, canonical URL, or `CNAME` file until it is confirmed in writing.
-- **Forms: conflicting instructions, unresolved.** The owner first chose "wait for our own backend"
-  and explicitly rejected hosted form services. The later hosting decision says "forms go to a
-  hosted form service." These cannot both hold. Until the owner picks one, build the markup and
-  validation against the contract above and leave the endpoint unset — do not quietly pick a side.
+- **Which form service.** Formspree or Web3Forms — not yet picked, and the account is the owner's to
+  create. Record the choice and the public form ID here once it exists.
 - **Analytics.** The hosting decision mentions "analytics is a script tag." Nothing is chosen or
   approved. Any third-party script on pages that collect contact details needs explicit sign-off
   and a PDPA look (Singapore); a cookieless, self-hostable option is the better default.
