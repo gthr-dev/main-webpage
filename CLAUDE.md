@@ -21,9 +21,15 @@ scratchpad, never into this repo.
 
 ## Status
 
-Pre-scaffold. The repo currently contains only `README.md` and this file — one commit, `main`,
-remote `git@github.com:bj-gthr/main-webpage.git`. Everything under "Commands" and "Structure" below
-describes the agreed target, not what exists today. Update this file as it lands.
+Scaffolded. All four pages build and render, styled to the deck's direction. What is *not* done:
+real photography, real business details, the enquiry forms, and a deploy workflow.
+
+The site is gated behind two switches, both of which must be flipped before launch:
+
+- `PLACEHOLDER` in `src/data/site.js` — while `true`, every page shows a "Preview" bar saying the
+  details are not confirmed. Set it to `false` once real details replace the placeholders.
+- `public/robots.txt` — currently `Disallow: /`, so the placeholder address, hours and draft menu
+  cannot be indexed or picked up as a business listing. Remove that line at launch.
 
 ## Stack and the decisions behind it
 
@@ -87,15 +93,25 @@ menu.html           menu display    |  Vite entry points
 contact.html        contact us      |
 events.html         event enquiry  /
 src/
-  main/             one mount file per page
-  components/       Nav, Footer, Section — shared across all four
-  data/menu.ts      menu content as data, never hardcoded into JSX
-  styles/           tokens.css (design tokens), base.css, per-page css
-public/             images, favicon, robots.txt
+  main/             mount only — 9 lines each, createRoot on a page component
+  pages/            Home, Menu, Contact, Events — the actual page bodies
+  components/       Page (shell), Nav, Footer, Section, Rows, Plate,
+                    MenuGroup, Enquiry
+  data/site.js      business details + nav; all placeholders for now
+  data/menu.js      menu content as data, never hardcoded into JSX
+  styles/           tokens.css, base.css (elements), components.css (blocks)
+public/             favicon.svg, robots.txt, and fonts/ once they exist
 ```
 
-The menu page renders from `src/data/menu.ts`. The menu is still being decided, so keep content
-separate from markup — menu edits should never require touching a component.
+Mounting is kept separate from the page body on purpose: `src/pages/*` export plain components with
+no DOM side effects, so they can be rendered to a string and asserted against without a browser.
+
+Content lives in `src/data/`. Editing the menu or the opening hours should never mean touching a
+component.
+
+`Plate` is a hatched grey box standing in for photography. The deck's images are reference shots of
+other people's venues and **must not ship** — replace each `Plate` with a real `<img>` and alt text
+as GTHR's own photography arrives.
 
 ## Design direction
 
@@ -150,11 +166,20 @@ be used for body copy**. Do not lighten `--muted`.
 - **Contact** — address, hours, map link, enquiry form.
 - **Events** — short intro plus an enquiry form (name, email, phone, date, headcount, message).
 
-## Forms — hosted form service
+## Forms — hosted form service, deferred
+
+**Current state: there are no forms.** Form handling is deliberately postponed, so the contact and
+events pages show a placeholder business address through the `Enquiry` component instead. That is
+the point — a form with no endpoint behind it looks functional and silently discards whatever a
+visitor typed, which is worse than no form at all.
+
+When the work resumes, the agreed design is below. Replace the body of `Enquiry` and leave the
+surrounding layout alone.
 
 Contact and event enquiries POST to a **hosted form service** (Formspree or Web3Forms) which emails
 them to the café. Pages cannot run code, so there is no alternative that works at launch. This
-supersedes an earlier decision to wait for our own backend; `mailto:` remains rejected.
+supersedes an earlier decision to wait for our own backend; `mailto:` remains rejected as the
+submission mechanism.
 
 Payload shape, kept stable so the service can be swapped for our own API later:
 
