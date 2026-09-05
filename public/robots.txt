@@ -1,0 +1,7 @@
+# The site is still a preview: business details and menu are placeholders.
+# Blocking crawlers keeps fake hours, a fake address and an unconfirmed menu
+# out of search results and off Google's cafe listings.
+#
+# AT LAUNCH: delete the Disallow line below, leaving "Allow: /".
+User-agent: *
+Disallow: /
