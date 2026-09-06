@@ -47,10 +47,10 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # PARKED: serving the holding page, not the app.
-          # To go live, change this one line back to `path: dist`.
+          # To go live, change this one line back to `path: ./dist`.
           # The build step above still runs, so the app stays verified
           # while parked and the switch back cannot surprise you.
-          path: holding
+          path: ./holding
 
   deploy:
     needs: build
