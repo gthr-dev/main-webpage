@@ -21,8 +21,8 @@ scratchpad, never into this repo.
 
 ## Status
 
-Scaffolded. All four pages build and render, styled to the deck's direction. What is *not* done:
-real photography, real business details, the enquiry forms, and a deploy workflow.
+Scaffolded, with a Pages deploy workflow. All four pages build and render, styled to the deck's
+direction. What is *not* done: real photography, real business details, and the enquiry forms.
 
 The site is gated behind two switches, both of which must be flipped before launch:
 
@@ -75,7 +75,7 @@ Repo needs a `CNAME` file containing the apex domain once that domain is confirm
 have "Enforce HTTPS" on.
 
 **Absolute asset paths break on the project URL.** Until a custom domain exists the site is served
-from `bj-gthr.github.io/main-webpage/`, so anything referencing a path from the site root resolves
+from `gthr-dev.github.io/main-webpage/`, so anything referencing a path from the site root resolves
 one level too high. Vite rewrites absolute URLs it can resolve — `/favicon.svg` becomes
 `./favicon.svg` — but it cannot rewrite a file it has never seen. The `@font-face` rules in
 `base.css` still point at `/fonts/*.woff2`, which will 404 at the project URL. Harmless today
