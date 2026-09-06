@@ -67,8 +67,20 @@ automatic HTTPS and certificate renewal, nothing to patch. Content is versioned 
 edit is one `git revert`, and deploys run automatically on merge to `main` via GitHub Actions
 (build with `npm run build`, publish `dist/`).
 
+The workflow is `.github/workflows/deploy.yml`: build on push to `main` (or manually via
+`workflow_dispatch`), upload `dist/`, deploy. It needs **Settings → Pages → Source: GitHub Actions**
+set once by hand; without that the run fails at the deploy step.
+
 Repo needs a `CNAME` file containing the apex domain once that domain is confirmed, and Pages must
 have "Enforce HTTPS" on.
+
+**Absolute asset paths break on the project URL.** Until a custom domain exists the site is served
+from `bj-gthr.github.io/main-webpage/`, so anything referencing a path from the site root resolves
+one level too high. Vite rewrites absolute URLs it can resolve — `/favicon.svg` becomes
+`./favicon.svg` — but it cannot rewrite a file it has never seen. The `@font-face` rules in
+`base.css` still point at `/fonts/*.woff2`, which will 404 at the project URL. Harmless today
+because those files do not exist; when the fonts arrive, put them somewhere Vite can resolve
+(`src/styles/fonts/`, referenced relatively) rather than `public/fonts/` referenced absolutely.
 
 **DNS records — do not disturb existing mail.** There is already email running on this domain. When
 repointing DNS, change only the `A`/`AAAA` records at the apex (to GitHub's four Pages addresses)
