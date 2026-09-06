@@ -21,12 +21,17 @@ scratchpad, never into this repo.
 
 ## Status
 
-**PARKED.** The deploy workflow currently publishes `holding/`, not `dist/` — the domain serves a
-holding page while the site is not ready to go live. The app itself is unchanged and still builds
-on every push, so it stays verified while parked.
+**PARKED.** The deploy workflow publishes `holding/`, not `dist/`. That folder contains only a plain
+`404.html` and a `CNAME`, so gthr.sg answers every path with a genuine HTTP 404 — no index page, no
+branding, no sign that anything is coming. The app is unchanged and still builds on every push, so
+it stays verified while parked.
 
-To go live: change `path: holding` back to `path: dist` in `.github/workflows/deploy.yml`. That one
-line is the whole switch, in both directions. Do not delete `holding/` — it is how the site gets
+Serving a real 404 rather than a styled "coming soon" page is deliberate. An `index.html` would
+return HTTP 200 with error-looking content, which crawlers treat as a live page (a soft 404); with
+no index, Pages returns a true 404 status and search engines drop the URL on their own.
+
+To go live: change `path: ./holding` back to `path: ./dist` in `.github/workflows/deploy.yml`. That
+one line is the whole switch, in both directions. Do not delete `holding/` — it is how the site gets
 parked again.
 
 Scaffolded, with a Pages deploy workflow. All four pages build and render, styled to the deck's
