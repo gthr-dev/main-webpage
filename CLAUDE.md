@@ -21,6 +21,14 @@ scratchpad, never into this repo.
 
 ## Status
 
+**PARKED.** The deploy workflow currently publishes `holding/`, not `dist/` — the domain serves a
+holding page while the site is not ready to go live. The app itself is unchanged and still builds
+on every push, so it stays verified while parked.
+
+To go live: change `path: holding` back to `path: dist` in `.github/workflows/deploy.yml`. That one
+line is the whole switch, in both directions. Do not delete `holding/` — it is how the site gets
+parked again.
+
 Scaffolded, with a Pages deploy workflow. All four pages build and render, styled to the deck's
 direction. What is *not* done: real photography, real business details, and the enquiry forms.
 
@@ -245,9 +253,11 @@ layer, or a config file, stop and confirm it is wanted first.
 
 Do not silently resolve these — they need the owner's call:
 
-- **Domain name.** A domain is already registered at Vodien and already carries live email, but its
-  exact name is not confirmed here — `gthr.com` in the infra diagram may be a placeholder. Do not
-  hardcode a domain, canonical URL, or `CNAME` file until it is confirmed in writing.
+- **Domain name.** The owner has named **gthr.sg** (superseding `gthr.com` in the infra diagram).
+  Still unverified from here: whether it is configured under Settings → Pages, and whether a
+  `CNAME` file needs to live in the published artifact to stop the custom domain being dropped on
+  deploy. Confirm before adding one — a `CNAME` naming a domain whose DNS is not pointed at Pages
+  takes the site offline at *both* URLs.
 - **Which form service.** Formspree or Web3Forms — not yet picked, and the account is the owner's to
   create. Record the choice and the public form ID here once it exists.
 - **Analytics.** The hosting decision mentions "analytics is a script tag." Nothing is chosen or

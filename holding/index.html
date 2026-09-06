@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en-SG">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>gthr</title>
+
+    <!-- Not live yet: keep this out of search results and off business
+         listings. Remove when the real site goes back up. -->
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- Inline favicon so this page makes no outside requests at all. -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2317191a'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23e6e7e7' text-anchor='middle'%3Eg%3C/text%3E%3C/svg%3E"
+      type="image/svg+xml"
+    />
+
+    <style>
+      /* Self-contained on purpose. No build step, no fonts, no scripts,
+         nothing to 404. Palette matches src/styles/tokens.css. */
+      * {
+        box-sizing: border-box;
+        border-radius: 0;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        background: #e6e7e7;
+        color: #17191a;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif;
+      }
+
+      main {
+        text-align: center;
+      }
+
+      h1 {
+        font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+        font-weight: 400;
+        font-size: clamp(3rem, 14vw, 6rem);
+        line-height: 1;
+        letter-spacing: 0.02em;
+        margin: 0;
+      }
+
+      hr {
+        border: 0;
+        border-top: 1px solid #767879;
+        width: 3rem;
+        margin: 1.75rem auto;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.8125rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: #5a5c5d;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <h1>gthr</h1>
+      <hr />
+      <p>Cafe &amp; social space</p>
+    </main>
+  </body>
+</html>
